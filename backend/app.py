@@ -19,6 +19,10 @@ jwt = JWTManager(app)
 # Enable CORS for frontend interaction (React)
 CORS(app)
 
+@app.route('/')
+def testing():
+    return "Routes is Working."
+
 # -------------------------------------------
 # Register Route: To create a new user
 # -------------------------------------------
