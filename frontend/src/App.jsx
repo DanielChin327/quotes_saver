@@ -8,6 +8,9 @@ import Dashboard from './components/Dashboard';
 // Main App component with routes for login, registration, and dashboard
 function App() {
     return (
+
+      <>
+        <h1>Main Page</h1>
         <Router>
             <Routes>
                 {/* Define routes */}
@@ -16,6 +19,8 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
         </Router>
+
+        </>
     );
 }
 
