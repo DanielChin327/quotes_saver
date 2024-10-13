@@ -51,20 +51,28 @@ def register():
 # -------------------------------------------
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.json  # Get JSON data
+    data = request.json  # Get the JSON data sent from the frontend
     username = data.get('username')
     password = data.get('password')
 
     # Find the user in the database
     user = User.query.filter_by(username=username).first()
 
-    # Check if the user exists and password matches
-    if not user or not user.check_password(password):
+    # If the user doesn't exist or the password is incorrect, return an error
+    if not user:
         return jsonify({"msg": "Bad username or password"}), 401
 
-    # Create a JWT token for the user
-    access_token = create_access_token(identity=user.id)
+    # Print the hashed password stored in the database
+    print(f"Stored password (hashed): {user.password}")
+    print(f"Provided password: {password}")
 
+    # Check if the provided password matches the hashed password
+    if not user.check_password(password):
+        print("Password check failed")
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    # If the credentials are correct, create a JWT token for the user
+    access_token = create_access_token(identity=user.id)
     return jsonify(access_token=access_token), 200
 
 # -------------------------------------------
