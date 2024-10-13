@@ -1,29 +1,47 @@
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy  # Import SQLAlchemy for ORM functionality
+from werkzeug.security import generate_password_hash, check_password_hash  # For password hashing
 
 # Initialize SQLAlchemy
 db = SQLAlchemy()
 
-# User model: Represents the users in the database
+# -------------------------------------------
+# User Model: Represents the users in the database
+# -------------------------------------------
 class User(db.Model):
-    __tablename__ = 'users'
+    """
+    Represents the 'users' table in the database.
+    Each user has a unique ID, a username, and a hashed password.
+    """
+    __tablename__ = 'users'  # Name of the database table
 
-    user_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    # Define the columns in the 'users' table
+    user_id = db.Column(db.Integer, primary_key=True)  # Primary key (unique user ID)
+    username = db.Column(db.String(100), unique=True, nullable=False)  # Username must be unique
+    password = db.Column(db.String(255), nullable=False)  # Store the hashed password
 
     def set_password(self, password):
-        # Hash the password and store it
-        self.password = generate_password_hash(password)
+        """
+        Hashes the password using a secure algorithm (SHA-256 with salt) and stores it.
+        """
+        self.password = generate_password_hash(password)  # Hash the password
 
     def check_password(self, password):
-        # Check if the given password matches the stored hash
-        return check_password_hash(self.password, password)
+        """
+        Verifies if the provided password matches the stored hashed password.
+        """
+        return check_password_hash(self.password, password)  # Compare passwords
 
-# Quote model: Represents user quotes in the database
+# -------------------------------------------
+# Quote Model: Represents user quotes in the database
+# -------------------------------------------
 class Quote(db.Model):
-    __tablename__ = 'quotes'
+    """
+    Represents the 'quotes' table in the database.
+    Each quote is linked to a specific user (via user_id) and contains the text of the quote.
+    """
+    __tablename__ = 'quotes'  # Name of the database table
 
-    quote_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    quote = db.Column(db.Text, nullable=False)
+    # Define the columns in the 'quotes' table
+    quote_id = db.Column(db.Integer, primary_key=True)  # Primary key (unique quote ID)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)  # Foreign key referencing the user who added the quote
+    quote = db.Column(db.Text, nullable=False)  # The text of the quote
