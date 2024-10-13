@@ -8,7 +8,7 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
@@ -24,6 +24,6 @@ class User(db.Model):
 class Quote(db.Model):
     __tablename__ = 'quotes'
 
-    id = db.Column(db.Integer, primary_key=True)
+    quote_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     quote = db.Column(db.Text, nullable=False)
