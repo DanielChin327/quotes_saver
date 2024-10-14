@@ -87,6 +87,7 @@ def login():
 # -------------------------------------------
 # Add Quote Route: To add a quote (Authenticated)
 # -------------------------------------------
+
 @app.route('/quotes', methods=['POST'])
 @jwt_required()  # Requires the user to be logged in (JWT token required)
 def add_quote():
